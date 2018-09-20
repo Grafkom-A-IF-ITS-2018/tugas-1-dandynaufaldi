@@ -106,13 +106,78 @@ function triDiObj( vertices, verItemSize, verNumItem, colors, colItemSize, colNu
         this.positionBuffer = gl.createBuffer()
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer)
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW)
+        // this.positionBuffer.itemSize = this.verItemSize
+        // this.positionBuffer.numItems = this.verNumItem
 
         this.colorBuffer = gl.createBuffer()
         gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer)
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colors), gl.STATIC_DRAW)
+        // this.colorBuffer.itemSize = this.colItemSize
+        // this.colorBuffer.numItems = this.colNumItem
     }
 }
+// -2.0, 3.0, 0.0,   //1
+//                     -2.0, 3.0, 0.0,     //2
+//                     -2.0, -3.0, 0.0,   //10
 
+//                     -2.0, 3.0, 0.0,   //2
+//                     -1.0, -3.0, 0.0,  //9
+//                     -2.0, -3.0, 0.0,   //10
+let triDiObjs = []
+//     -2  -1  0   1   2
+//-------------------------
+// 3// 3   5       9   10
+// 2//
+// 1//     4
+// 0//
+//-1//             7
+//-2//
+//-3// 2   1       6   8
+//-2.0, 3.0, 0.0,   //3
+//-1.0, 3.0, 0.0,   //5
+//1.0, -1.0, 0.0,   //7
+//1.0, 3,0, 0.0,    //9
+//2.0, 3.0, 0.0,    //10
+//2.0, -3.0, 0.0,   //8
+//1.0, -3.0, 0.0,   //6
+//-1.0, 1.0, 0.0,   //4
+//-1.0, -3.0, 0.0,  //1 
+//-2.0, -3.0, 0.0,   //2 
+let n = new triDiObj([-1.0, -3.0, 0.0,  //1 
+                    -2.0, -3.0, 0.0,   //2 
+                    -2.0, 3.0, 0.0,   //3
+                    -1.0, 1.0, 0.0,   //4
+                    -1.0, 3.0, 0.0,   //5
+                    1.0, -3.0, 0.0,   //6
+                    1.0, -1.0, 0.0,   //7
+                    2.0, -3.0, 0.0,   //8
+                    1.0, 3,0, 0.0,    //9
+                    2.0, 3.0, 0.0,    //10
+                    ],
+                    3, 3,
+                    [0.0, 0.5, 0.5, 1.0,
+                    0.0, 0.5, 0.5, 1.0,
+                    0.0, 0.5, 0.5, 1.0,
+                    0.0, 0.5, 0.5, 1.0,
+                    0.0, 0.5, 0.5, 1.0,
+                    0.0, 0.5, 0.5, 1.0,
+                    0.0, 0.5, 0.5, 1.0,
+                    0.0, 0.5, 0.5, 1.0,
+                    0.0, 0.5, 0.5, 1.0,
+                    0.0, 0.5, 0.5, 1.0,
+                    ],
+                    4, 3)
+
+let y = new triDiObj([1.0, 1.0, 0.0,
+                    -1.0, 1.0, 0.0,
+                    1.0, -1.0, 0.0,
+                    -1.0, -1.0, 0.0],
+                    3, 4,
+                    [1.0, 0.0, 0.0, 1.0,
+                    0.0, 1.0, 0.0, 1.0,
+                    0.0, 0.0, 1.0, 1.0],
+                    4, 4)
+console.log(n)        
 let triangleVertexPositionBuffer
 let triangleVertexColorBuffer
 let squareVertexPositionBuffer
@@ -122,46 +187,71 @@ function initBuffers() {
     triangleVertexPositionBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer)
     let vertices = [
-        0.0,    1.0,    0.0,
-        -1.0, -1.0, 0.0,
-        1.0,    -1.0, 0.0
+        -2.0, -3.0, 0.0,   //2 
+        -1.0, -3.0, 0.0,  //1 
+        -2.0, 3.0, 0.0,   //3
+        -1.0, 3.0, 0.0,   //5
+        1.0, -3.0, 0.0,   //6
+        2.0, -3.0, 0.0,   //8
+        1.0, 3.0, 0.0,    //9
+        2.0, 3.0, 0.0,    //10
     ]
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
     triangleVertexPositionBuffer.itemSize = 3
-    triangleVertexPositionBuffer.numItems = 3
+    triangleVertexPositionBuffer.numItems = 8
     // Triangle Color
     triangleVertexColorBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer)
     let colors = [
         1.0, 0.0, 0.0, 1.0,
         0.0, 1.0, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0
+        0.0, 0.0, 1.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
+        0.0, 0.0, 1.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
     ]
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW)
     triangleVertexColorBuffer.itemSize = 4
-    triangleVertexColorBuffer.numItems = 3
+    triangleVertexColorBuffer.numItems = 8
     // Square Position
     squareVertexPositionBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer)
     vertices = [
-        1.0,    1.0,    0.0,
-        -1.0, 1.0,    0.0,
-        1.0,    -1.0, 0.0,
-        -1.0, -1.0, 0.0
+        1.0, -2.0, 0.0, //1
+        0.0, -2.0, 0.0, //2
+        1.0, 0.5, 0.0, //3
+        0.0, 0.5, 0.0, //4
+        -0.5, 3.5, 0.0, //5
+        -1.5, 3.0, 0.0, //6
+        1.0, 0.5, 0.0, //7
+        0.0, 0.5, 0.0, //8
+        2.5, 3.0, 0.0, //9
+        1.5, 3.5, 0.0 //10
     ]
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
     squareVertexPositionBuffer.itemSize = 3
-    squareVertexPositionBuffer.numItems = 4
+    squareVertexPositionBuffer.numItems = 10
     // Square Color
     squareVertexColorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexColorBuffer);
-    colors = [];
-    for (let i=0; i < 4; i++) {
-            colors = colors.concat([0.5, 0.5, 1.0, 1.0]);
-    }
+    colors = [
+        1.0, 0.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
+        0.0, 0.0, 1.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
+        0.0, 0.0, 1.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
+        0.0, 0.0, 1.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+    ]
+    
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
     squareVertexColorBuffer.itemSize = 4;
-    squareVertexColorBuffer.numItems = 4;
+    squareVertexColorBuffer.numItems = 10;
 }
 let rTri = 0
 let rSquare = 0
@@ -170,20 +260,20 @@ function drawScene() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
     mat4.perspective(pMatrix, glMatrix.toRadian(45), gl.viewportWidth / gl.viewportHeight, 0.1, 100.0)
     mat4.identity(mvMatrix)
-    mat4.translate(mvMatrix, mvMatrix, [-1.5, 0.0, -7.0])
+    mat4.translate(mvMatrix, mvMatrix, [-1.5, 3.0, -20.0])
     mvPushMatrix()
-    mat4.rotate(mvMatrix, mvMatrix, glMatrix.toRadian(rTri), [0.0, 1.0, 0.0])
+    mat4.rotate(mvMatrix, mvMatrix, glMatrix.toRadian(rTri), [1.0, 0.0, 0.0])
     //mat4.rotateY(mvMatrix, mvMatrix, glMatrix.toRadian(rTri))
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer)
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0)
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer)
     gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0)
     setMatrixUniforms()
-    gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems)
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, triangleVertexPositionBuffer.numItems)
     mvPopMatrix()
-    mat4.translate(mvMatrix, mvMatrix, [3.0, 0.0, 0.0])
+    mat4.translate(mvMatrix, mvMatrix, [0.0, -7.0, 0.0])
     mvPushMatrix()
-    mat4.rotate(mvMatrix, mvMatrix, glMatrix.toRadian(rSquare), [1.0, 0.0, 0.0])
+    mat4.rotate(mvMatrix, mvMatrix, glMatrix.toRadian(rSquare), [0.0, 1.0, 0.0])
     //mat4.rotateX(mvMatrix, mvMatrix, glMatrix.toRadian(rSquare))
     gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer)
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0)
